@@ -1,5 +1,10 @@
 #!/bin/sh -
 
+#
+# Script that generates all the automake/autoconf generated stuff
+# from their sources.
+#
+
 req() {
     test -f $1 || get $1
 }

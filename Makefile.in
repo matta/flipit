@@ -133,7 +133,7 @@ NROFF = nroff
 DATA =  $(noinst_DATA) $(sysconf_DATA)
 
 DIST_COMMON =  README ./stamp-h.in AUTHORS COPYING ChangeLog INSTALL \
-Makefile.am Makefile.in NEWS acinclude.m4 aclocal.m4 config.h.in \
+Makefile.am Makefile.in NEWS THANKS acinclude.m4 aclocal.m4 config.h.in \
 configure configure.in flipit.pod.in install-sh missing mkinstalldirs
 
 
@@ -372,7 +372,7 @@ distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \

@@ -24,12 +24,8 @@
  * SUCH DAMAGE.
  */
 
-This is flipit version 0.1.5, a program for controlling X10 devices
+This is flipit version 0.2.0, a program for controlling X10 devices
 via a cm17a "Firecracker" from X10 Ltd.
-
-This is an ALPHA version of flipit.  Features are missing and/or
-incomplete.  Still, I greatly appreciate reports of either problems or
-successes with this package!
 
 I can be reached at Matt Armstrong <matt@lickey.com>.
 

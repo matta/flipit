@@ -119,7 +119,8 @@ least be an option to do this for those using the cm17a on the same serial
 port as their modem or similar.
 
 There are reports of the brighten command always taking the lamp to the full
-brightness.  I haven't been able to reproduce that here.  Any suggestions or
+brightness.  I haven't been able to reproduce that here.  Some have suggested
+to me that this happens only with older lamp controllers.  Any suggestions or
 fixes are appreciated.
 
 =head1 RESTRICTIONS
