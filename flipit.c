@@ -33,6 +33,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #if HAVE_SYS_TYPES_H
 #include <sys/types.h>

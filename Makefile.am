@@ -35,38 +35,21 @@ man_MANS = flipit.1
 noinst_DATA = flipit.html
 
 EXTRA_DIST = cm17a_proto.txt autogen.sh conf.h flipit.pod.in SECURITY \
-		solaris.txt $(sysconf_DATA) flipit.1
+		solaris.txt $(sysconf_DATA)
 
 CUSTOM_DIST = $(man_MANS) $(noinst_DATA)
 CUSTOM_VERSION_CHECK = $(srcdir)/README flipit.1 flipit.html
 
 CLEANFILES = *~
 
-# Because we use maintainer mode, we have to tell distcheck to enable
-# it when checking the dist.  (this should be the default!)
-DISTCHECK_CONFIGURE_FLAGS = --enable-maintainer-mode
-
-DISTCLEANFILES = flipit-*.tar.gz
-
-# Because we use maintainer mode, we have to trick the distcleancheck
-# mechanism into not thinking the files in MAINTAINERCLEANFILES are
-# problems if they are left after a distclean.  (this should be the
-# default!)
-MAINTAINERCLEANFILES = flipit.1 flipit.html \
-	aclocal.m4 config.h.in configure depcomp missing \
-	Makefile.in
-distcleancheck_listfiles = \
-	find -type f -a ! -name flipit.1 -a ! -name flipit.html
-
 AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
+DISTCLEANFILES = flipit.1 flipit.html
 
-if MAINTAINER_MODE
 flipit.1: flipit.pod
 	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" flipit.pod > flipit.1
 
 flipit.html: flipit.pod
 	$(POD2HTML) --noindex flipit.pod > flipit.html
-endif
 
 dist-hook: flipit.html
 	for file in $(CUSTOM_VERSION_CHECK); do \

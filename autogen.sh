@@ -5,23 +5,6 @@
 # from their sources.
 #
 
-req() {
-    test -f $1 || get $1
-}
-
-req configure.ac
-req Makefile.am
-req acinclude.m4
-req INSTALL
-req NEWS
-req README
-req COPYING
-req AUTHORS
-req THANKS
-req ChangeLog
-req flipit.pod.in
-req cm17a.c
-
 echo "Generating aclocal.m4..."
 aclocal
 echo "Generating config.h.in..."

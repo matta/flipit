@@ -12,7 +12,7 @@
 # PARTICULAR PURPOSE.
 
 /*-
- * Copyright (c) 1999 Matt Armstrong
+ * Copyright (c) 1999, 2003 Matt Armstrong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,14 +37,14 @@
  * SUCH DAMAGE.
  */
 
-dnl FLIPIT_MISSING_POD_PROG(NAME, PROGRAM, DIRECTORY)
+dnl FLIPIT_MISSING_POD_PROG(NAME, PROGRAM)
 AC_DEFUN(FLIPIT_MISSING_POD_PROG,
 [AC_MSG_CHECKING(for working $2)
 if ($2 --help) < /dev/null 2>&1 | grep 'sage:' > /dev/null 2>&1; then
 	$1=$2
 	AC_MSG_RESULT(found)
 else
-	$1="$3/missing $2"
+	$1="$am_aux_dir/missing $2"
 	AC_MSG_RESULT(missing)
 fi
 AC_SUBST($1)])

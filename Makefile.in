@@ -113,7 +113,7 @@ man_MANS = flipit.1
 noinst_DATA = flipit.html
 
 EXTRA_DIST = cm17a_proto.txt autogen.sh conf.h flipit.pod.in SECURITY \
-		solaris.txt $(sysconf_DATA) flipit.1
+		solaris.txt $(sysconf_DATA)
 
 
 CUSTOM_DIST = $(man_MANS) $(noinst_DATA)
@@ -121,25 +121,8 @@ CUSTOM_VERSION_CHECK = $(srcdir)/README flipit.1 flipit.html
 
 CLEANFILES = *~
 
-# Because we use maintainer mode, we have to tell distcheck to enable
-# it when checking the dist.  (this should be the default!)
-DISTCHECK_CONFIGURE_FLAGS = --enable-maintainer-mode
-
-DISTCLEANFILES = flipit-*.tar.gz
-
-# Because we use maintainer mode, we have to trick the distcleancheck
-# mechanism into not thinking the files in MAINTAINERCLEANFILES are
-# problems if they are left after a distclean.  (this should be the
-# default!)
-MAINTAINERCLEANFILES = flipit.1 flipit.html \
-	aclocal.m4 config.h.in configure depcomp missing \
-	Makefile.in
-
-distcleancheck_listfiles = \
-	find -type f -a ! -name flipit.1 -a ! -name flipit.html
-
-
 AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
+DISTCLEANFILES = flipit.1 flipit.html
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -382,6 +365,7 @@ am__remove_distdir = \
          && rm -fr $(distdir); }; }
 
 GZIP_ENV = --best
+distcleancheck_listfiles = find . -type f -print
 
 distdir: $(DISTFILES)
 	@if sed 15q $(srcdir)/NEWS | fgrep -e "$(VERSION)" >/dev/null; \
@@ -500,7 +484,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
@@ -556,11 +539,11 @@ uninstall-man: uninstall-man1
 	uninstall-man uninstall-man1 uninstall-sysconfDATA
 
 
-@MAINTAINER_MODE_TRUE@flipit.1: flipit.pod
-@MAINTAINER_MODE_TRUE@	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" flipit.pod > flipit.1
+flipit.1: flipit.pod
+	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" flipit.pod > flipit.1
 
-@MAINTAINER_MODE_TRUE@flipit.html: flipit.pod
-@MAINTAINER_MODE_TRUE@	$(POD2HTML) --noindex flipit.pod > flipit.html
+flipit.html: flipit.pod
+	$(POD2HTML) --noindex flipit.pod > flipit.html
 
 dist-hook: flipit.html
 	for file in $(CUSTOM_VERSION_CHECK); do \
