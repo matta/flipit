@@ -1,0 +1,73 @@
+=head1 NAME
+
+flipit - control the X10 Firecracker (CM17A)
+
+=head1 SYNOPSIS
+
+S<flipit [B<flip> B<(a-p)(1-16)> B<(on|off)>] [repeat...]>
+
+=head1 DESCRIPTION
+
+This document describes flipit version @VERSION@.
+
+Flipit allows you to control X10 devices with your Unix computer by
+means of a Firecracker (model number CM17A) plugged into a serial
+port.
+
+X10 is a method of transmitting control commands to devices over
+regular home power lines.  The Firecracker is a device manufactured by
+X10 Ltd.  See http://www.x10.com/ for product information.
+
+For more information, see http://www.lickey.com/flipit/.
+
+=head1 OPTIONS
+
+Flipit has a simple command structure.  The first argument must always
+be 'flip.'  The next argument is a device specifier.  Device
+specifiers are comprised of a house code (a letter "a" to "p") and a
+device code (a number 1 to 16).  The next argument is either "on" or
+"off."  These three arguments can be repeated in this sequence, which
+allows to turn more than one device on or off at a time.
+
+=head1 ERRORS
+
+If everything goes well, flipit will exit with a value of zero.  Upon
+error, it will print the reason why on stderr and exit with a non-zero
+exit value.
+
+=head1 EXAMPLES
+
+The following will turn device 5 in house code B on:
+
+C<flipit flip b5 on>
+
+The following will first turn device 10 in house code C off, then turn
+device 16 in house code A on:
+
+C<flipit flip c10 off flip a16 on>
+
+=head1 FILES
+
+flipit reads the filename of the tty device to use from the
+F<flipit.conf> file.  The F<flipit.conf> file is usually in the
+F</usr/local/etc> directory, but can be changed at compile time.
+
+=head1 NOTES
+
+This is an ALPHA version of flipit.  Not all features are implemented.
+
+A similar and more full featured program is called BottleRocket.
+
+=head1 BUGS
+
+Flipit doesn't create any lock files when accessing the tty.
+
+=head1 RESTRICTIONS
+
+Flipit does no security checking itself.  If it finds that it can open
+the tty device named in F<flipit.conf> it will be happy to do so.
+
+=head1 AUTHOR
+
+Matt Armstrong <matt@lickey.com>
+http://www.lickey.com/flipit/

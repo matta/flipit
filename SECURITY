@@ -1,0 +1,9 @@
+By default, flipit relies _entirely_ on Unix file permissions for security.  If
+it can open the serial port's tty device in flipit.conf, then it will happily
+access that port.
+
+It does this because any other security mechanism can be worked around by the
+user simply compiling their own copy of flipit.  In other words, if a user can
+open the port's tty device, they can mess with your cm17a anyway.
+
+I'm wrong here, please let me know.

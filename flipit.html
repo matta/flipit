@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+<TITLE>flipit - control the X10 Firecracker</TITLE>
+<LINK REV="made" HREF="mailto:none">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#NAME">NAME</A>
+	<LI><A HREF="#SYNOPSIS">SYNOPSIS</A>
+	<LI><A HREF="#DESCRIPTION">DESCRIPTION</A>
+	<LI><A HREF="#OPTIONS">OPTIONS</A>
+	<LI><A HREF="#ERRORS">ERRORS</A>
+	<LI><A HREF="#EXAMPLES">EXAMPLES</A>
+	<LI><A HREF="#FILES">FILES</A>
+	<LI><A HREF="#NOTES">NOTES</A>
+	<LI><A HREF="#BUGS">BUGS</A>
+	<LI><A HREF="#RESTRICTIONS">RESTRICTIONS</A>
+	<LI><A HREF="#AUTHOR">AUTHOR</A>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="NAME">NAME</A></H1>
+<P>
+flipit - control the X10 Firecracker (CM17A)
+
+<P>
+<HR>
+<H1><A NAME="SYNOPSIS">SYNOPSIS</A></H1>
+<P>
+flipit&nbsp;[<STRONG>flip</STRONG>&nbsp;<STRONG>(a-p)(1-16)</STRONG>&nbsp;<STRONG>(on|off)</STRONG>]&nbsp;[repeat...]
+
+
+
+<P>
+<HR>
+<H1><A NAME="DESCRIPTION">DESCRIPTION</A></H1>
+<P>
+This document describes flipit version 0.1.0.
+
+<P>
+Flipit allows you to control X10 devices with your Unix computer by means
+of a Firecracker (model number CM17A) plugged into a serial port.
+
+<P>
+X10 is a method of transmitting control commands to devices over regular
+home power lines. The Firecracker is a device manufactured by X10 Ltd. See
+<A HREF="http://www.x10.com/">http://www.x10.com/</A> for product
+information.
+
+<P>
+For more information, see <A
+HREF="http://www.lickey.com/flipit/.">http://www.lickey.com/flipit/.</A>
+
+<P>
+<HR>
+<H1><A NAME="OPTIONS">OPTIONS</A></H1>
+<P>
+Flipit has a simple command structure. The first argument must always be
+'flip.' The next argument is a device specifier. Device specifiers are
+comprised of a house code (a letter ``a'' to ``p'') and a device code (a
+number 1 to 16). The next argument is either ``on'' or ``off.'' These three
+arguments can be repeated in this sequence, which allows to turn more than
+one device on or off at a time.
+
+<P>
+<HR>
+<H1><A NAME="ERRORS">ERRORS</A></H1>
+<P>
+If everything goes well, flipit will exit with a value of zero. Upon error,
+it will print the reason why on stderr and exit with a non-zero exit value.
+
+<P>
+<HR>
+<H1><A NAME="EXAMPLES">EXAMPLES</A></H1>
+<P>
+The following will turn device 5 in house code B on:
+
+<P>
+<CODE>flipit flip b5 on</CODE>
+
+
+
+<P>
+The following will first turn device 10 in house code C off, then turn
+device 16 in house code A on:
+
+<P>
+<CODE>flipit flip c10 off flip a16 on</CODE>
+
+
+
+<P>
+<HR>
+<H1><A NAME="FILES">FILES</A></H1>
+<P>
+flipit reads the filename of the tty device to use from the
+<EM>flipit.conf</EM> file. The <EM>flipit.conf</EM> file is usually in the
+<EM>/usr/local/etc</EM> directory, but can be changed at compile time.
+
+<P>
+<HR>
+<H1><A NAME="NOTES">NOTES</A></H1>
+<P>
+This is an ALPHA version of flipit. Not all features are implemented.
+
+<P>
+A similar and more full featured program is called BottleRocket.
+
+<P>
+<HR>
+<H1><A NAME="BUGS">BUGS</A></H1>
+<P>
+Flipit doesn't create any lock files when accessing the tty.
+
+<P>
+<HR>
+<H1><A NAME="RESTRICTIONS">RESTRICTIONS</A></H1>
+<P>
+Flipit does no security checking itself. If it finds that it can open the
+tty device named in <EM>flipit.conf</EM> it will be happy to do so.
+
+<P>
+<HR>
+<H1><A NAME="AUTHOR">AUTHOR</A></H1>
+<P>
+Matt Armstrong &lt;<A HREF="mailto:matt@lickey.com">matt@lickey.com</A>&gt;
+<A HREF="http://www.lickey.com/flipit/">http://www.lickey.com/flipit/</A>
+</BODY>
+
+</HTML>

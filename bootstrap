@@ -1,0 +1,10 @@
+#!/bin/sh
+echo "Generating config.h.in..."
+autoheader
+echo "Generating the Makefile.in files..."
+automake --add-missing
+echo "Generating aclocal.m4..."
+aclocal
+echo "Generating the configure script..."
+autoconf
+echo "Done!  Now run configure."
