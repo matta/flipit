@@ -1,3 +1,17 @@
+Supported Platforms
+===================
+
+Flipit has been reported to compile and run under the following Unix
+and Unix-like operating systems:
+
+	Linux
+	OpenBSD
+
+If your operating system is not listed and you get it to work, please
+drop me a line at matt@lickey.com.  I am very interested to hear about
+both successes and failures.
+
+
 Basic Installation
 ==================
 
@@ -14,9 +28,9 @@ reconfiguring, and a file `config.log' containing compiler output
 If you are compiling flipit on a system which it has not been compiled
 on before, it may not compile or link on your system.  In this case,
 you have probably found a bug.  Please do as much as you can to find
-and fix the problem.  Even sending the complete output of the
-configure and compile steps can be helpful to the maintainer.  The
-maintainer's e-mail address is listed in the `README'.  
+and fix the problem.  If you are not much of a programmer, even
+reporting the complete output of the failed configure and compile
+steps is helpful.
 
 	     NOTE: If you want to work on this program, please note
 	     that the rules for generating the configure.in,
@@ -24,8 +38,8 @@ maintainer's e-mail address is listed in the `README'.
 	     Run ./configure with --enable-maintainer-mode to turn
 	     them on.
 
-If at some point `config.cache' contains results you don't want to keep, you
-may remove or edit it.
+If at some point `config.cache' contains results you don't want to
+keep, you may remove or edit it.
 
 The simplest way to compile this package is:
 
@@ -38,14 +52,21 @@ The simplest way to compile this package is:
      Running `configure' takes awhile.  While running, it prints some
      messages telling which features it is checking for.
 
+     Flipit has a flipit.conf file.  It will usually go into
+     ${prefix}/etc, which usually ends up being /usr/local/etc.  If
+     you don't like this, you can pass --sysconfdir to `configure'.
+     For example:
+
+     	./configure --sysconfdir=/etc
+
   2. Type `make' to compile the package.
 
-  3. The program will not work yet.  Flipit looks for flipit.conf
-     (usually as /usr/local/etc/flipit.conf, but that will differ if
-     you passed --prefix or --sysconfdir to the `./configure' script).
-     If you want to copy the sample flipit.conf file to the
-     appropriate directory, edit it to suit your system, and then
-     re-try flipit.
+  3. The program will not work until it is installed.  Flipit looks
+     for flipit.conf (usually as /usr/local/etc/flipit.conf, but that
+     will differ if you passed --prefix or --sysconfdir to the
+     `./configure' script).  If you want to copy the sample
+     flipit.conf file to the appropriate directory, edit it to suit
+     your system, and then re-try flipit.
 
   3. Type `make install' to install the programs and any data files
      and documentation.  PLEASE take the time to read the `SECURITY'

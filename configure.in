@@ -24,7 +24,7 @@
  * SUCH DAMAGE.
  */
 AC_INIT(cm17a.c)
-AM_INIT_AUTOMAKE(flipit, 0.1.0)
+AM_INIT_AUTOMAKE(flipit, 0.1.1)
 
 if test x"$missing_dir" = x; then
 	echo "Whoopse, AM_INIT_AUTOMAKE used to set $missing_dir"
@@ -39,6 +39,6 @@ AM_MAINTAINER_MODE
 AC_PROG_CC
 
 AC_STDC_HEADERS
-AC_HAVE_HEADERS(fcntl.h sys/time.h sys/types.h termio.h unistd.h)
+AC_HAVE_HEADERS(fcntl.h sys/ioctl.h sys/time.h sys/types.h unistd.h)
 
 AC_OUTPUT([Makefile flipit.pod])

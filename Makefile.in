@@ -464,15 +464,11 @@ distclean-generic clean-generic maintainer-clean-generic clean \
 mostlyclean distclean maintainer-clean
 
 
-flipit.pod: $(srcdir)/flipit.pod.in $(top_builddir)/config.status
-        cd $(top_builddir) \
-          && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
 flipit.1: flipit.pod
-	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" $< > $@
+	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" flipit.pod > flipit.1
 
 flipit.html: flipit.pod
-	$(POD2HTML) --noindex $< > $@
+	$(POD2HTML) --noindex flipit.pod > flipit.html
 
 dist-hook: flipit.html
 	for file in $(CUSTOM_VERSION_CHECK); do \
@@ -486,7 +482,7 @@ dist-hook: flipit.html
 		d=$(top_builddir); \
 		echo cp -p $$d/$$file $(distdir)/$$file; \
 		cp -p $$d/$$file $(distdir)/$$file; \
-        done
+	done
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -46,15 +46,11 @@ CUSTOM_VERSION_CHECK = $(srcdir)/README flipit.1 flipit.html
 
 AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
 
-flipit.pod: $(srcdir)/flipit.pod.in $(top_builddir)/config.status
-        cd $(top_builddir) \
-          && CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
 flipit.1: flipit.pod
-	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" $< > $@
+	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" flipit.pod > flipit.1
 
 flipit.html: flipit.pod
-	$(POD2HTML) --noindex $< > $@
+	$(POD2HTML) --noindex flipit.pod > flipit.html
 
 dist-hook: flipit.html
 	for file in $(CUSTOM_VERSION_CHECK); do \
@@ -68,4 +64,4 @@ dist-hook: flipit.html
 		d=$(top_builddir); \
 		echo cp -p $$d/$$file $(distdir)/$$file; \
 		cp -p $$d/$$file $(distdir)/$$file; \
-        done
+	done

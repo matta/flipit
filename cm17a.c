@@ -38,14 +38,14 @@
 #if HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
+#if HAVE_SYS_IOCTL_H
+#include <sys/ioctl.h>
+#endif
 #if HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
 #if HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
-#if HAVE_TERMIO_H
-#include <termio.h>
 #endif
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -312,7 +312,7 @@ main(int argc, char* argv[])
 		exit(3);
 	}
 
-	if ((fd = open(conf_dev_tty(), O_RDONLY)) < 0) {
+	if ((fd = open(conf_dev_tty(), O_RDONLY | O_NDELAY)) < 0) {
 		fprintf(stderr, "Error opening tty %s\n", conf_dev_tty());
 		exit(3);
 	}
