@@ -1,7 +1,8 @@
-By default, flipit relies _entirely_ on Unix file permissions for
-security.  If it can open the serial port's tty device as specified in
-flipit.conf or the command line, then it will happily access that
-port.
+Flipit relies _entirely_ on Unix file permissions for security.
+
+The X10 Firecracker/CM17a works by attaching to a serial port, so if
+flipit is able to open the specified serial port then it will operate
+properly.
 
 It does this because any other security mechanism can be worked around
 by the user simply compiling their own copy of flipit.  In other

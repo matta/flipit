@@ -1,3 +1,7 @@
+User visible changes for flipit version 0.3.1, May 27, 2000:
+
+	Correct detection of Perl 5.6's pod2man.
+
 User visible changes for flipit version 0.3.0, May 27, 2000:
 
 	Added the command_delay and bit_delay option options.

@@ -23,12 +23,12 @@ req flipit.pod.in
 req missing
 req cm17a.c
 
+echo "Generating aclocal.m4..."
+aclocal
 echo "Generating config.h.in..."
 autoheader
 echo "Generating the Makefile.in files..."
-automake --add-missing
-echo "Generating aclocal.m4..."
-aclocal
+automake --add-missing --foreign
 echo "Generating the configure script..."
 autoconf
 echo "Now running configure..."

@@ -694,7 +694,7 @@ fi
 
 PACKAGE=flipit
 
-VERSION=0.3.0
+VERSION=0.3.1
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -867,7 +867,7 @@ fi
 fi
 echo $ac_n "checking for working pod2html""... $ac_c" 1>&6
 echo "configure:870: checking for working pod2html" >&5
-if (pod2html --help) < /dev/null 2>&1 | grep 'sage:.*pod2html' > /dev/null 2>&1; then
+if (pod2html --help) < /dev/null 2>&1 | grep 'sage:' > /dev/null 2>&1; then
 	POD2HTML=pod2html
 	echo "$ac_t""found" 1>&6
 else
@@ -877,7 +877,7 @@ fi
 
 echo $ac_n "checking for working pod2man""... $ac_c" 1>&6
 echo "configure:880: checking for working pod2man" >&5
-if (pod2man --help) < /dev/null 2>&1 | grep 'sage:.*pod2man' > /dev/null 2>&1; then
+if (pod2man --help) < /dev/null 2>&1 | grep 'sage:' > /dev/null 2>&1; then
 	POD2MAN=pod2man
 	echo "$ac_t""found" 1>&6
 else
