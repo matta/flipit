@@ -33,3 +33,11 @@ void		conf_set_dev_tty(const char*);
 #define SYSCONFFILE SYSCONFDIR ## "/flipit.conf"
 
 #endif /* CONF_H */
+
+/*
+  Local Variables:
+  mode:c
+  c-file-style:"linux"
+  tab-width:8
+  End:
+*/

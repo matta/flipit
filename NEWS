@@ -1,12 +1,24 @@
-User visible changes for flipit version 0.1.2:
+User visible changes for flipit version 0.1.4, August 18, 1999:
+
+	Bug fix: the -t arg now works again.
+
+User visible changes for flipit version 0.1.3, August 11, 1999:
+
+	Add dim and brighten commands.
+
+	Sped things up a bit by no longer resetting the CM17a with
+	each command and decreasing the inter-command delay to 0.5
+	seconds.
+
+User visible changes for flipit version 0.1.2, August 2, 1999:
 
 	Add -h and -t command line arguments.  Updated INSTALL
 	explaining how -t can be used to test flipit before the "make
 	install" step.
 
-User visible changes for flipit version 0.1.1:
+User visible changes for flipit version 0.1.1, July 29, 1999:
 
 	Port to OpenBSD (minor compile problems -- it worked once it
 	compiled).
 
-Initial public release of flipit was version 0.1.0.
+Initial public release of flipit was version 0.1.0, July 28, 1999.

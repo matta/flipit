@@ -34,6 +34,7 @@
 #include <stddef.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #if HAVE_FCNTL_H
 #include <fcntl.h>
@@ -58,87 +59,88 @@ enum SIGNAL {
 	STANDBY = (TIOCM_RTS | TIOCM_DTR)
 };
 
-/* Macros to form the command data */
-#define COMMAND_ON(house, device)	\
-((house_codes[house] << 12) | device_codes[device])
-
-#define COMMAND_OFF(house, device)	\
-(COMMAND_ON(house, device) | 0x0020)
-
-#define COMMAND_BRIGHT(house)		(bright_codes[house])
-#define COMMAND_DIM(house)		\
-(COMMAND_BRIGHT(house) | 0x0010)
-
 /* The house code is the high nibble of the command data. */
-unsigned char house_codes[16] = {
-	0x6,			/* A */
-	0x7,			/* B */
-	0x4,			/* C */
-	0x5,			/* D */
-
-	0x8,			/* E */
-	0x9,			/* F */
-	0xA,			/* G */
-	0xB,			/* H */
-
-	0xE,			/* I */
-	0xF,			/* J */
-	0xC,			/* K */
-	0xD,			/* L */
-
-	0x0,			/* M */
-	0x1,			/* N */
-	0x2,			/* O */
-	0x3,			/* P */
+unsigned short house_codes[16] = {
+	0x6000,			/* A */
+	0x7000,			/* B */
+	0x4000,			/* C */
+	0x5000,			/* D */
+	0x8000,			/* E */
+	0x9000,			/* F */
+	0xA000,			/* G */
+	0xB000,			/* H */
+	0xE000,			/* I */
+	0xF000,			/* J */
+	0xC000,			/* K */
+	0xD000,			/* L */
+	0x0000,			/* M */
+	0x1000,			/* N */
+	0x2000,			/* O */
+	0x3000,			/* P */
 };
 
-/* The remaining 3 nibbles address the specific device within the
-   house. Bitwise or in 0x0020 to turn the device off. Notice that
-   devices >= 9 are just 0x4000 bitwise ored with the same device
-   numbered 8 smaller. */
+/* The device codes are described by bits 3, 4, 6, and 10. */
+#define DEVICE_BITS 0x0458
 unsigned short device_codes[16] = {
 	0x0000,			/* 1 */
 	0x0010,			/* 2 */
 	0x0008,			/* 3 */
 	0x0018,			/* 4 */
-
 	0x0040,			/* 5 */
 	0x0050,			/* 6 */
 	0x0048,			/* 7 */
 	0x0058,			/* 8 */
-
 	0x0400,			/* 9 */
 	0x0410,			/* 10 */
 	0x0408,			/* 11 */
 	0x0418,			/* 12 */
-
 	0x0440,			/* 13 */
 	0x0450,			/* 14 */
 	0x0448,			/* 15 */
 	0x0458,			/* 16 */
 };
 
-/* To brighten each house, send the following commands.  To dim a
-   house, just or in 0x0010 to this value. */
-unsigned short bright_codes[16] = {
-	0x6088,			/* A */
-	0x7088,			/* B */
-	0x4088,			/* C */
-	0x5088,			/* D */
-	0x8088,			/* E */
-	0x9088,			/* F */
-	0xA088,			/* G */
-	0xB088,			/* H */
-	0xE088,			/* I */
-	0xF088,			/* J */
-	0xC088,			/* K */
-	0xD088,			/* L */
-	0x0088,			/* M */
-	0x1088,			/* N */
-	0x2088,			/* O */
-	0x3088,			/* P */
+/* The command codes are described by bits 1, 2, 5, 7, 8, 9, and
+   11. */
+unsigned short command_codes[] = {
+	0x0000,			/* ON */
+	0x0020,			/* OFF */
+	0x0088,			/* BRIGHT */
+	0x0098,			/* DIM */
 };
 
+enum command_index {
+	ON, OFF, BRIGHTEN, DIM
+};
+
+#define ELEMENT_COUNT(a) (sizeof(a) / sizeof((a)[0]))
+
+unsigned short
+cm17a_command_word(int house, 
+		   int device, 
+		   enum command_index command)
+{
+	unsigned short retval;
+
+	assert(house >= 0 && house < ELEMENT_COUNT(house_codes));
+	assert(device >= 0 && house < ELEMENT_COUNT(device_codes));
+	assert(command >= 0 && house < ELEMENT_COUNT(command_codes));
+	
+	switch (command) {
+	case BRIGHTEN:
+	case DIM:
+		retval = house_codes[house] | command_codes[command];
+		break;
+
+	default:
+		retval = (house_codes[house] | 
+			  device_codes[device] |
+			  command_codes[command]);
+		break;
+	}
+
+	return retval;
+}
 
 static void
 sleep_us(unsigned int nusecs)
@@ -205,19 +207,8 @@ write_stream(int fd,
 	return 0;
 }
 
-
 static int
-reset(int fd)
-{
-	if (set(fd, RESET) != 0) {
-		return -1;
-	}
-	delay();
-	return 0;
-}
-
-static int
-standby(int fd)
+cm17a_standby(int fd)
 {
 	if (set(fd, STANDBY) != 0) {
 		return -1;
@@ -227,7 +218,7 @@ standby(int fd)
 }
 
 static int
-header(int fd)
+cm17a_header(int fd)
 {
 	/* Header bits taken straight from the CM17A spec. */
 	const unsigned char header[] = {
@@ -244,60 +235,118 @@ footer(int fd)
 }
 
 static int
-command(int fd, int command)
+cm17a_write_command(int fd, 
+		    int house, 
+		    int device, 
+		    enum command_index command)
 {
-	if (reset(fd) || standby(fd)) {
+	short command_word;
+
+	command_word = cm17a_command_word(house, device, command);
+
+	if (cm17a_standby(fd)) {
 		return -1;
 	}
 
-	/* The cm17a seems to need another delay period to settle down
-	   after the reset. */
+	/* The cm17a seems to need another delay period after a
+	   standby to settle down after the reset. */
 	delay();
-	
-	if (header(fd) ||
-	    write_byte(fd, command >> 8) || 
-	    write_byte(fd, command) ||
+
+	if (cm17a_header(fd) ||
+	    write_byte(fd, command_word >> 8) || 
+	    write_byte(fd, command_word) ||
 	    footer(fd)) {
 		return -1;
 	}
 
-	sleep_us(1000000);
+	sleep_us(500000);
 
 	return 0;
 }
 
+int
+parse_device(const char* device_str, 
+	     int* house, int* device)
+{
+	*house = -1;
+	*device = -1;
+
+	if (strlen(device_str) >= 2) {
+		*house = toupper(device_str[0]) - 'A';
+		*device = atoi(&device_str[1]) - 1;
+	}
+
+	if (*house < 0 || *house > 15 || *device < 0 || *device > 15) {
+
+		fprintf(stderr, "Invalid house/device specification %s\n",
+			device_str);
+		return -1;
+	}
+	return 0;
+}
 
 void
 flip(int fd,
      const char* device_str, 
      const char* operation_str) 
 {
-	int house = -1;
-	int device = -1;
+	int house;
+	int device;
 
-	if (strlen(device_str) >= 2) {
-		house = toupper(device_str[0]) - 'A';
-		device = atoi(&device_str[1]) - 1;
-	}
-
-	if (house < 0 || house > 15 || device < 0 || device > 15) {
-
-		fprintf(stderr, "Invalid house/device specification %s\n",
-			device_str);
+	if (parse_device(device_str, &house, &device)) {
 		return;
 	}
-	
+
 	if (!strcmp(operation_str, "on")) {
-		if (command(fd, COMMAND_ON(house, device)) != 0) {
+		if (cm17a_write_command(fd, house, device, ON) != 0) {
 			fprintf(stderr, "Command failed.\n");
 		}
 	} else if (!strcmp(operation_str, "off")) {
-		if (command(fd, COMMAND_OFF(house, device)) != 0) {
+		if (cm17a_write_command(fd, house, device, OFF) != 0) {
 			fprintf(stderr, "Command failed.\n");
 		}
 	} else {
 		fprintf(stderr, "Invalid flip operation %s\n", operation_str);
 	}
+}
+
+void
+dim_or_brighten(int fd, 
+		const char* device_str, 
+		const char* steps_str,
+		enum command_index cmd)
+{
+	int house;
+	int device;
+	int steps;
+
+	if (parse_device(device_str, &house, &device)) {
+		return;
+	}
+
+	steps = atoi(steps_str);
+
+	if (steps < 1 || steps > 6) {
+		fprintf(stderr, 
+			"Invalid steps (%d).  Must be [1..6].\n", 
+			steps);
+		return;
+	}
+
+	/* Turn the device we wish to control on first.  If we don't
+	   do this, the dim command gets handled by the last device
+	   that got turned on.  The cm17a dim/brighten command doesn't
+	   use a device code. */
+	   
+	if (cm17a_write_command(fd, house, device, ON) != 0) {
+		fprintf(stderr, "Command failed.\n");
+	}
+
+	do {
+		if (cm17a_write_command(fd, house, device, cmd)) {
+			fprintf(stderr, "Command failed.\n");
+		}
+	} while (--steps > 0);
 }
 
 void
@@ -313,26 +362,32 @@ usage(char* argv[])
 "OPTIONS:\n"
 "\n"
 " -h            This help.\n"
-" -t tty        Set the tty flipit will use.  There is no default.\n"
+" -t tty        Set the tty flipit will use.  This is usually set in the\n"
+"               configuration file (%s).\n"
 "\n"
 "COMMANDS:\n"
 "\n"
-" flipit <house code><device number> [on|off]\n"
+" flip <house code><device number> [on|off]\n"
+" dim <house code><device number> count\n"
+" brighten <house code><device number> count\n"
 "\n"
-"    Flip a device on or off.\n"
+"    Flip a device on or off, dim or brighten a device by count\n"
+"    steps.\n"
 "\n"
 "EXAMPLES:\n"
 "\n"
 "    flipit flip a1 off\n"
 "    flipit flip b4 on\n"
+"    flipit dim h7 5\n"
+"    flipit brighten a2 2\n"
 "\n"
 "You can pass more than one command at a time.\n"
 "\n"
-"    flipit flip a1 off flip b4 on\n"
+"    flipit flip a1 off flip b4 on dim h7 5\n"
 "\n"
 "Report bugs to <matt@lickey.com>.  This is flipit version %s\n"
 "The flipit home page is http://www.lickey.com/flipit/.\n", 
-	argv[0], SYSCONFFILE, VERSION);
+	argv[0], SYSCONFFILE, SYSCONFFILE, VERSION);
 }
 
 
@@ -377,9 +432,18 @@ main(int argc, char* argv[])
 		exit(3);
 	}
 
-	for (i = 1; i < argc; i++) {
+	/* optind is set by getopt() */
+	for (i = optind; i < argc; i++) {
 		if (!strcmp(argv[i], "flip") && (i + 2) < argc) {
 			flip(fd, argv[i + 1], argv[i + 2]);
+			i += 2;
+		} else if (!strcmp(argv[i], "dim") && (i + 2) < argc) {
+			dim_or_brighten(fd, argv[i + 1], argv[i + 2], 
+					DIM);
+			i += 2;
+		} else if (!strcmp(argv[i], "brighten") && (i + 2) < argc) {
+			dim_or_brighten(fd, argv[i + 1], argv[i + 2], 
+					BRIGHTEN);
 			i += 2;
 		} else {
 			fprintf(stderr, 
@@ -387,9 +451,22 @@ main(int argc, char* argv[])
 			for (; i < argc; i++) {
 				fprintf(stderr, " %s\n", argv[i]);
 			}
+			usage(argv);
 		}
+	}
+	if (i == 1) {
+		usage(argv);
 	}
 
 	close(fd);
 	return 0;
 }
+
+
+/*
+  Local Variables:
+  mode:c
+  c-file-style:"linux"
+  tab-width:8
+  End:
+*/

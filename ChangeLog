@@ -1,3 +1,9 @@
+1999-08-09  Matt Armstrong  <matt@lickey.com>
+
+	* cm17a.c (dim): new function.
+	(brighten): new function.
+	(dim_or_bright): new function.
+	
 1999-08-02  Matt Armstrong  <matt@lickey.com>
 
 	* conf.c (conf_parse): don't fail if conf file is missing.

@@ -127,3 +127,11 @@ conf_parse(void)
 	fclose(conf);
 	return 0;
 }
+
+/*
+  Local Variables:
+  mode:c
+  c-file-style:"linux"
+  tab-width:8
+  End:
+*/
