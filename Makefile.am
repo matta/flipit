@@ -1,5 +1,5 @@
 #
-#  Copyright (C) 1999, 2002, 2003 Matt Armstrong
+#  Copyright (C) 1999, 2002, 2003, 2004 Matt Armstrong
 #  All rights reserved.
 # 
 #  Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ CUSTOM_VERSION_CHECK = $(srcdir)/README flipit.1 flipit.html
 CLEANFILES = *~
 
 AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
-DISTCLEANFILES = flipit.1 flipit.html
+DISTCLEANFILES = flipit.1 flipit.html *.tmp
 
 flipit.1: flipit.pod
 	$(POD2MAN) --section=1 --release="flipit version @VERSION@" --center="flipit @VERSION@" flipit.pod > flipit.1

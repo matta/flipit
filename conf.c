@@ -31,8 +31,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define SYSCONFFILE SYSCONFDIR ## "/flipit.conf"
-
 static char* dev_tty = 0;
 
 /* Set the tty device we should open. */

@@ -1,148 +1,181 @@
-<HTML>
-<HEAD>
-<TITLE>flipit - control the X10 Firecracker</TITLE>
-<LINK REV="made" HREF="mailto:perl@packages.debian.org">
-</HEAD>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>flipit - control the X10 Firecracker</title>
+<link rev="made" href="mailto:root@localhost" />
+</head>
 
-<BODY>
+<body style="background-color: white">
 
-<A NAME="__index__"></A>
+<p><a name="__index__"></a></p>
 <!-- INDEX BEGIN -->
 <!--
 
-<UL>
+<ul>
 
-	<LI><A HREF="#name">NAME</A></LI>
-	<LI><A HREF="#synopsis">SYNOPSIS</A></LI>
-	<LI><A HREF="#description">DESCRIPTION</A></LI>
-	<LI><A HREF="#options">OPTIONS</A></LI>
-	<LI><A HREF="#commands">COMMANDS</A></LI>
-	<LI><A HREF="#errors">ERRORS</A></LI>
-	<LI><A HREF="#examples">EXAMPLES</A></LI>
-	<LI><A HREF="#files">FILES</A></LI>
-	<LI><A HREF="#notes">NOTES</A></LI>
-	<LI><A HREF="#bugs">BUGS</A></LI>
-	<LI><A HREF="#restrictions">RESTRICTIONS</A></LI>
-	<LI><A HREF="#author">AUTHOR</A></LI>
-</UL>
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#options">OPTIONS</a></li>
+	<li><a href="#commands">COMMANDS</a></li>
+	<li><a href="#errors">ERRORS</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+	<li><a href="#files">FILES</a></li>
+	<li><a href="#notes">NOTES</a></li>
+	<li><a href="#bugs">BUGS</a></li>
+	<li><a href="#restrictions">RESTRICTIONS</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
 -->
 <!-- INDEX END -->
 
-<P>
-<H1><A NAME="name">NAME</A></H1>
-<P>flipit - control the X10 Firecracker (CM17A)</P>
-<P>
-<HR>
-<H1><A NAME="synopsis">SYNOPSIS</A></H1>
-<PRE>
- flipit [-h] [-t tty] [COMMAND ARGS] [COMMAND ARGS]...</PRE>
-<P>
-<HR>
-<H1><A NAME="description">DESCRIPTION</A></H1>
-<P>This document describes flipit version 0.3.5.</P>
-<P>Flipit allows you to control X10 devices with your Unix computer by
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>flipit - control the X10 Firecracker (CM17A)</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<pre>
+ flipit [-h] [-t tty] [COMMAND ARGS] [COMMAND ARGS]...</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>This document describes flipit version 0.3.6.</p>
+<p>Flipit allows you to control X10 devices with your Unix computer by
 means of a Firecracker (model number CM17A) plugged into a serial
-port.</P>
-<P>X10 is a method of transmitting control commands to devices over
+port.</p>
+<p>X10 is a method of transmitting control commands to devices over
 regular home power lines.  The Firecracker is a device manufactured by
-X10 Ltd.  See <A HREF="http://www.x10.com/">http://www.x10.com/</A> for product information.</P>
-<P>For more information, see <A HREF="http://www.lickey.com/flipit/.">http://www.lickey.com/flipit/.</A></P>
-<P>
-<HR>
-<H1><A NAME="options">OPTIONS</A></H1>
-<P>First pass any options to flipit, then pass any commands.  For a list of
-commands, see the COMMANDS section below.  Now, for the options...</P>
-<DL>
-<DT><STRONG><A NAME="item_help">help</A></STRONG><BR>
-<DD>
-<PRE>
-  -h</PRE>
-<P>Displays the usage message.</P>
-<DT><STRONG><A NAME="item_tty">tty</A></STRONG><BR>
-<DD>
-<PRE>
-  -t tty</PRE>
-<P>Set the tty flipit will use.  This is usually set in the configuration
-file <EM>flipit.conf</EM>, but this option lets you override it, mainly for
-testing purposes.</P>
-</DL>
-<P>
-<HR>
-<H1><A NAME="commands">COMMANDS</A></H1>
-<P>After any of the above options, you pass any number of commands on the
-command line.  The commands are flip, dim and brighten.</P>
-<P>Most of the commands take a ``device-specifier'' argument.  This is just
+X10 Ltd.  See <a href="http://www.x10.com/">http://www.x10.com/</a> for product information.</p>
+<p>For more information, see <a href="http://www.lickey.com/flipit/.">http://www.lickey.com/flipit/.</a></p>
+<p>
+</p>
+<hr />
+<h1><a name="options">OPTIONS</a></h1>
+<p>First pass any options to flipit, then pass any commands.  For a list of
+commands, see the COMMANDS section below.  Now, for the options...</p>
+<dl>
+<dt><strong><a name="item_help">help</a></strong><br />
+</dt>
+<dd>
+<pre>
+  -h</pre>
+</dd>
+<dd>
+<p>Displays the usage message.</p>
+</dd>
+<dt><strong><a name="item_tty">tty</a></strong><br />
+</dt>
+<dd>
+<pre>
+  -t tty</pre>
+</dd>
+<dd>
+<p>Set the tty flipit will use.  This is usually set in the configuration
+file <em>flipit.conf</em>, but this option lets you override it, mainly for
+testing purposes.</p>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="commands">COMMANDS</a></h1>
+<p>After any of the above options, you pass any number of commands on the
+command line.  The commands are flip, dim and brighten.</p>
+<p>Most of the commands take a ``device-specifier'' argument.  This is just
 a way to specify a given X10 device with a string of characters.
 Device specifiers are comprised of a house code (a letter ``a'' to ``p'')
-and a device code (a number 1 to 16).  E.g. a10</P>
-<P>For concrete examples, see the EXAMPLES section.</P>
-<DL>
-<DT><STRONG><A NAME="item_brighten">brighten</A></STRONG><BR>
-<DD>
-<PRE>
-  brighten device-specifier steps</PRE>
-<P>Brighten a device by a given number of steps.  Steps can be from 1 to 6.</P>
-<DT><STRONG><A NAME="item_dim">dim</A></STRONG><BR>
-<DD>
-<PRE>
-  dim device-specifier steps</PRE>
-<P>Dim a device by a given number of steps.  Steps can be from 1 to 6.</P>
-<DT><STRONG><A NAME="item_flip">flip</A></STRONG><BR>
-<DD>
-<PRE>
-  flip device-specifier on|off</PRE>
-<P>Flip a device on or off.  The first argument is a device specifier
-(see above).  The next argument is either ``on'' or ``off.''</P>
-</DL>
-<P>
-<HR>
-<H1><A NAME="errors">ERRORS</A></H1>
-<P>If everything goes well, flipit will exit with a value of zero.  Upon
+and a device code (a number 1 to 16).  E.g. a10</p>
+<p>For concrete examples, see the EXAMPLES section.</p>
+<dl>
+<dt><strong><a name="item_brighten">brighten</a></strong><br />
+</dt>
+<dd>
+<pre>
+  brighten device-specifier steps</pre>
+</dd>
+<dd>
+<p>Brighten a device by a given number of steps.  Steps can be from 1 to 6.</p>
+</dd>
+<dt><strong><a name="item_dim">dim</a></strong><br />
+</dt>
+<dd>
+<pre>
+  dim device-specifier steps</pre>
+</dd>
+<dd>
+<p>Dim a device by a given number of steps.  Steps can be from 1 to 6.</p>
+</dd>
+<dt><strong><a name="item_flip">flip</a></strong><br />
+</dt>
+<dd>
+<pre>
+  flip device-specifier on|off</pre>
+</dd>
+<dd>
+<p>Flip a device on or off.  The first argument is a device specifier
+(see above).  The next argument is either ``on'' or ``off.''</p>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="errors">ERRORS</a></h1>
+<p>If everything goes well, flipit will exit with a value of zero.  Upon
 error, it will print the reason why on stderr and exit with a non-zero
-exit value.</P>
-<P>
-<HR>
-<H1><A NAME="examples">EXAMPLES</A></H1>
-<P>The following will turn device 5 in house code B on:</P>
-<P><CODE>flipit flip b5 on</CODE></P>
-<P>The following will first turn device 10 in house code C off, then turn
-device 16 in house code A on:</P>
-<P><CODE>flipit flip c10 off flip a16 on</CODE></P>
-<P>The following will dim device a5 by 2 steps, then brighten device d7 by 4
-steps.</P>
-<P><CODE>flipit dim a5 2 brighten d7 4</CODE></P>
-<P>
-<HR>
-<H1><A NAME="files">FILES</A></H1>
-<P>flipit reads the filename of the tty device to use from the
-<EM>flipit.conf</EM> file.  The <EM>flipit.conf</EM> file is usually in the
-<EM>/usr/local/etc</EM> directory, but can be changed at compile time.</P>
-<P>
-<HR>
-<H1><A NAME="notes">NOTES</A></H1>
-<P>This is an ALPHA version of flipit.  Not all features are implemented.</P>
-<P>A similar and more full featured program is called BottleRocket.</P>
-<P>
-<HR>
-<H1><A NAME="bugs">BUGS</A></H1>
-<P>Flipit doesn't create any lock files when accessing the tty.  There should at
+exit value.</p>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>The following will turn device 5 in house code B on:</p>
+<p><code>flipit flip b5 on</code></p>
+<p>The following will first turn device 10 in house code C off, then turn
+device 16 in house code A on:</p>
+<p><code>flipit flip c10 off flip a16 on</code></p>
+<p>The following will dim device a5 by 2 steps, then brighten device d7 by 4
+steps.</p>
+<p><code>flipit dim a5 2 brighten d7 4</code></p>
+<p>
+</p>
+<hr />
+<h1><a name="files">FILES</a></h1>
+<p>flipit reads the filename of the tty device to use from the
+<em>flipit.conf</em> file.  The <em>flipit.conf</em> file is usually in the
+<em>/usr/local/etc</em> directory, but can be changed at compile time.</p>
+<p>
+</p>
+<hr />
+<h1><a name="notes">NOTES</a></h1>
+<p>This is an ALPHA version of flipit.  Not all features are implemented.</p>
+<p>A similar and more full featured program is called BottleRocket.</p>
+<p>
+</p>
+<hr />
+<h1><a name="bugs">BUGS</a></h1>
+<p>Flipit doesn't create any lock files when accessing the tty.  There should at
 least be an option to do this for those using the cm17a on the same serial
-port as their modem or similar.</P>
-<P>There are reports of the brighten command always taking the lamp to the full
+port as their modem or similar.</p>
+<p>There are reports of the brighten command always taking the lamp to the full
 brightness.  I haven't been able to reproduce that here.  Some have suggested
 to me that this happens only with older lamp controllers.  Any suggestions or
-fixes are appreciated.</P>
-<P>
-<HR>
-<H1><A NAME="restrictions">RESTRICTIONS</A></H1>
-<P>Flipit does no security checking itself.  If it finds that it can open
-the tty device named in <EM>flipit.conf</EM> it will be happy to do so.</P>
-<P>
-<HR>
-<H1><A NAME="author">AUTHOR</A></H1>
-<P>Matt Armstrong &lt;<A HREF="mailto:matt@lickey.com">matt@lickey.com</A>&gt;
-<A HREF="http://www.lickey.com/flipit/">http://www.lickey.com/flipit/</A></P>
+fixes are appreciated.</p>
+<p>
+</p>
+<hr />
+<h1><a name="restrictions">RESTRICTIONS</a></h1>
+<p>Flipit does no security checking itself.  If it finds that it can open
+the tty device named in <em>flipit.conf</em> it will be happy to do so.</p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Matt Armstrong &lt;<a href="mailto:matt@lickey.com">matt@lickey.com</a>&gt;
+<a href="http://www.lickey.com/flipit/">http://www.lickey.com/flipit/</a></p>
 
-</BODY>
+</body>
 
-</HTML>
+</html>

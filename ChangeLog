@@ -1,3 +1,9 @@
+2004-10-30  Matt Armstrong  <matt@lickey.com>
+
+	* flipit.c (main): when given a "brighten" command, actually
+	brighten instead of dim.  Fix from Robert Stevens <robert_stevens
+	at yahoo dot com>.
+
 1999-08-09  Matt Armstrong  <matt@lickey.com>
 
 	* cm17a.c (dim): new function.

@@ -191,8 +191,9 @@ main(int argc, char* argv[])
                         i += 2;
 		} else if (!strcmp(argv[i], "brighten") && (i + 2) < argc) {
                         if (parse_device(argv[i + 1], &house, &device) == 0) {
-                                cm17a_command(fd, house, device, CM17A_DIM,
-                                              atoi(argv[i + 2]));
+                                cm17a_command(
+                                        fd, house, device, CM17A_BRIGHTEN,
+                                        atoi(argv[i + 2]));
                         }
                         i += 2;
 		} else {

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 1999 Matt Armstrong
+ * Copyright (c) 1999, 2004 Matt Armstrong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ int		conf_parse(void);
 const char*	conf_dev_tty(void);
 void		conf_set_dev_tty(const char*);
 
-#define SYSCONFFILE SYSCONFDIR ## "/flipit.conf"
+#define SYSCONFFILE SYSCONFDIR "/flipit.conf"
 
 #endif /* CONF_H */
 

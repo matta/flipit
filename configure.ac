@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 1999-2000, 2003 Matt Armstrong
+ * Copyright (c) 1999-2000, 2003, 2004 Matt Armstrong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,10 +23,10 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-AC_INIT(flipit, 0.3.5, matt@lickey.com)
+AC_INIT(flipit, 0.3.6, matt@lickey.com)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR([cm17a.c])
-AM_INIT_AUTOMAKE(flipit, 0.3.5)
+AM_INIT_AUTOMAKE(flipit, 0.3.6)
 AM_CONFIG_HEADER(config.h)
 
 FLIPIT_MISSING_POD_PROG(POD2HTML, pod2html)
