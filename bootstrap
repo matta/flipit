@@ -31,4 +31,5 @@ echo "Generating aclocal.m4..."
 aclocal
 echo "Generating the configure script..."
 autoconf
-echo "Done!  Now run configure."
+echo "Now running configure..."
+./configure --enable-maintainer-mode $*

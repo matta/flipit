@@ -1,3 +1,7 @@
+User visible changes for flipit version 0.3.0, May 27, 2000:
+
+	Added the command_delay and bit_delay option options.
+
 User visible changes for flipit version 0.2.0, May 27, 2000:
 
 	None, doc fixes only.  Code is identical to 0.1.5.

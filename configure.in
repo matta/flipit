@@ -24,7 +24,7 @@
  * SUCH DAMAGE.
  */
 AC_INIT(cm17a.c)
-AM_INIT_AUTOMAKE(flipit, 0.2.0)
+AM_INIT_AUTOMAKE(flipit, 0.3.0)
 
 if test x"$missing_dir" = x; then
 	echo "Whoopse, AM_INIT_AUTOMAKE used to set $missing_dir"
