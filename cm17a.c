@@ -51,6 +51,9 @@
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#if HAVE_TERMIO_H
+#include <termio.h>
+#endif
 
 enum SIGNAL {
 	RESET = 0,

@@ -1,0 +1,235 @@
+From: "Jeff Byers" <jlbyers at san dot rr dot com>
+To: <matt@lickey.com>
+Subject: flipit on SUN Ultra 5 running Solaris 2.6 -- what it took. 
+Date: Thu, 3 Aug 2000 09:54:38 -0700
+
+Hello Matt,
+
+Got Flipit 0.3.1 working on Linux easily enough.
+
+On SPARC Solaris 2.6 it took a little more work. I needed to add an
+include of "<termio.h>" to 'cm17a.c' to get missing macro definitions
+and a clean compile. [I have since fixed this -matt]
+
+It still didn't work. It would run very slow, and not command X-10
+modules.
+
+With some help from the newsgroups, I found that SUN had to put a 1-3
+second hysteresis in the toggling of DTR to avoid crashing modems.
+They eventually added a kernel parameter to control this delay.
+Apparently, there was a bug for the Ultra 5 so a patch was needed
+also.
+
+Anyway, it works find on a SUN Ultra 5 running Solaris 2.6 with the
+added patch and kernel variable.
+
+I am sure other people are running into the same thing (as evidenced
+by the newsgroup activity) so you might want to add a note somewhere
+about the extra steps for SUN boxes. Note that other people did the
+work figuring this stuff out.
+
+BTW thanks for doing 'flipit', it is cool to be able to X-10 control
+stuff from from my Linux firewall at home via cron.
+
+- Jeff Byers - jlbyers at san dot rr dot com -
+
+Background:
+
+Deja news thread: (note a typo in the Solaris patch number at the top... it
+is 105924.)
+
+http://x52.deja.com/getdoc.xp?AN=505455975&search=thread&CONTEXT=965320454.2050228252&hitnum=6
+
+I also was able to resolve the slow DTR problem with the help of a
+very friendly sysadmin.  Patch 105924-10, combined with "set
+se:se_default_dtrlow = 0" in /etc/system fixed the problem.
+
+Thanks for the help Mr. Darcy.
+
+ Greg
+  ...
+
+============
+
+The Solaris Bug Desc:
+
+ Bug Id: 4230310
+ Category: kernel
+ Subcategory: driver
+ State: integrated
+ Synopsis: se: can not toggle DTR in real time
+ Description:
+
+IHAC who wrote an application which uses dtrlow variable set to 0
+(zs:default_dtrlow=0 ===> /etc/system). This works pretty well on a
+SBus architecture.
+
+Now, CU bought a PCI based system (Ultra 10) and it is no longer working.
+
+I haven't look in the code specifically for this variable, but in
+general this is the change from SBus to PCI:
+
+        SBus                    PCI                     Type Driver
+
+        zs                      se                      async serial driver
+        zsh                     se_hdlc                 sync serial driver
+
+So if the code was a straight translate (which it probably isn't), it
+would now
+
+se:se_default_dtrlow seems to be the obvious candidate.
+
+Obvious indeed. But it seems that the value 0 is not supported. If I
+set se:se_default_dtrlow=0 there is still a timeout of one second when
+toggling DTR.
+
+Below you can find a small piece of code that toggles DTR. You can
+compile it and check the effect of the se_default_dtrlow value. On zs
+devices (Ultra 1) with zs:default_dtrlow set to 0, DTR toggles 1600
+times per second.
+
+#include <fcntl.h>
+#include <termio.h>
+#include <sys/time.h>
+
+#define L 13
+#define H 14
+
+/* Global variable (just for this test) */
+int port;
+
+void outport(unsigned char x)
+{
+  int bitset;
+
+  switch (x)
+  {
+    case L:
+      bitset = TIOCM_DTR;
+      ioctl(port, TIOCMBIS, &bitset);
+      break;
+
+    case H:
+     bitset = TIOCM_DTR;
+      ioctl(port, TIOCMBIC, &bitset);
+      break;
+
+    default :
+      printf("Invalid Status ...\n");
+  }
+}
+
+int main(int argc, char **argv)
+{
+  struct timeval time;
+  int i;
+
+  if ((port = open("/dev/ttya", O_RDWR | O_NDELAY)) == -1)
+  {
+    printf("Unable to open /dev/ttya/n");
+    exit(1);
+  }
+
+  /* NOTE: output to ttya is inverted (H->L, L->H) */
+
+  for (i=0; i<1000; i++)
+  {
+  outport(H); /* init */
+  gettimeofday(&time, NULL); printf("H: %ld.%ld\n", time.tv_sec,
+time.tv_usec);
+
+  outport(L);
+  gettimeofday(&time, NULL); printf("L: %ld.%ld\n", time.tv_sec,
+time.tv_usec);
+
+  }
+
+  /* close(port); */
+}
+
+
+I asked help, Sun Detroit, wrote:
+
+The zs (Ultra 1) and se (PCI) drivers differ on how they watch the clock.
+
+The zs driver (zs_common.c) waits if the number of seconds
+since the last time DTR went low is less than zs:default_dtrlow.
+
+        if ((mbits & ~obits & ZSWR5_DTR) && (held < default_dtrlow)) {
+
+The se driver (se_driver.c) waits if the number of seconds
+since the last time DTR went low is less than *or equal* than
+se:se_default_dtrlow.
+
+        while (timeval <= (sc->sc_dtrlow + se_default_dtrlow)) {
+
+The "or equal" guarantees the se driver will always wait a second
+even when se:se_default_dtrlow = 0.
+
+File a bug.
+
+
+ Work around:
+
+        Integrated in releases: s28_24
+ Duplicate of:
+ Patch id:
+ See also:
+ Summary:
+
+============
+
+SUN 2.6 Patch 105924 Desc: (Unfortunately, this is not a public patch)
+
+  Patch-ID# 105924-10
+  Keywords: se minor_perm devlink.tab iu.ap PCI kbd zs
+  Synopsis: SunOS 5.6: kbd, se and zs drivers patch
+  Date: Jul/23/99
+
+  Solaris Release: 2.6
+
+  SunOS Release: 5.6
+
+  Unbundled Product:
+
+  Unbundled Release:
+
+  Topic: SunOS 5.6: kbd, se and zs drivers patch
+
+  BugId's fixed with this patch: 4060687 4080183 4087337 4098045 4100150
+4110873
+  4113141 4115830 4116603 4132752 4136949 4144228 4145265 4147705 4151491
+4153570
+  4159098 4164468 4176071 4178060 4190872 4191338 4194055 4199552 4202013
+4230310
+
+
+  Changes incorporated in this version: 4147705
+
+  Relevant Architectures: sparc
+
+  Patches accumulated and obsoleted by this patch: 105610-04
+
+  Patches which conflict with this patch:
+
+  Patches required with this patch:
+
+  Obsoleted by:
+
+  Files included with this patch:
+
+  /etc/default/kbd
+  /etc/devlink.tab
+  /etc/iu.ap
+  /etc/minor_perm
+  /kernel/drv/se
+  /platform/sun4u/kernel/drv/zs
+  /platform/sun4m/kernel/drv/zs
+  /platform/sun4d/kernel/drv/zs
+  /platform/sun4c/kernel/drv/zs
+  /usr/bin/kbd
+
+  Problem Description:
+
+  4147705 Provide a method other than <break> for entering the debugger
+  ...

@@ -100,7 +100,7 @@ sysconf_DATA = flipit.conf
 man_MANS = flipit.1
 noinst_DATA = flipit.html
 
-EXTRA_DIST = cm17a_proto.txt bootstrap conf.h flipit.pod.in SECURITY 		$(sysconf_DATA)
+EXTRA_DIST = cm17a_proto.txt bootstrap conf.h flipit.pod.in SECURITY 		solaris.txt $(sysconf_DATA)
 
 
 CUSTOM_DIST = $(man_MANS) $(noinst_DATA)

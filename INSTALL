@@ -7,10 +7,14 @@ and Unix-like operating systems:
 	Linux
 	OpenBSD
 	NetBSD
+	Solaris
 
 If your operating system is not listed and you get it to work, please
 drop me a line at matt@lickey.com.  I am very interested to hear about
 both successes and failures.
+
+If you're having trouble on Solaris, check out solaris.txt in the
+distribution for what others have reported.
 
 
 Basic Installation

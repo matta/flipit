@@ -35,7 +35,7 @@ man_MANS = flipit.1
 noinst_DATA = flipit.html
 
 EXTRA_DIST = cm17a_proto.txt bootstrap conf.h flipit.pod.in SECURITY \
-		$(sysconf_DATA)
+		solaris.txt $(sysconf_DATA)
 
 CUSTOM_DIST = $(man_MANS) $(noinst_DATA)
 CUSTOM_VERSION_CHECK = $(srcdir)/README flipit.1 flipit.html
