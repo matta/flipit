@@ -300,6 +300,61 @@ flip(int fd,
 	}
 }
 
+void
+usage(char* argv[])
+{
+	printf(
+"Usage: %s [OPTION]... [COMMANDS]...\n"
+"\n"
+"Control the X10 Firecracker (CM17A).  This program's behavior is\n"
+"controlled in part by the %s file, but any\n"
+"command line arguments override that file's settings.\n"
+"\n"
+"OPTIONS:\n"
+"\n"
+" -h            This help.\n"
+" -t tty        Set the tty flipit will use.  There is no default.\n"
+"\n"
+"COMMANDS:\n"
+"\n"
+" flipit <house code><device number> [on|off]\n"
+"\n"
+"    Flip a device on or off.\n"
+"\n"
+"EXAMPLES:\n"
+"\n"
+"    flipit flip a1 off\n"
+"    flipit flip b4 on\n"
+"\n"
+"You can pass more than one command at a time.\n"
+"\n"
+"    flipit flip a1 off flip b4 on\n"
+"\n"
+"Report bugs to <matt@lickey.com>.  This is flipit version %s\n"
+"The flipit home page is http://www.lickey.com/flipit/.\n", 
+	argv[0], SYSCONFFILE, VERSION);
+}
+
+
+
+int
+parse_args(int argc, char* argv[])
+{
+	int c;
+
+	while ((c = getopt(argc, argv, "ht:")) != EOF) {
+		switch (c) {
+		case 'h':	/* help */
+			usage(argv);
+			exit(0);
+
+		case 't':	/* set the tty */
+			conf_set_dev_tty(optarg);
+			break;
+		}
+	}
+	return 0;
+}
 
 int
 main(int argc, char* argv[]) 
@@ -307,7 +362,12 @@ main(int argc, char* argv[])
 	int fd;
 	int i;
 
-	if (conf_parse() != 0) {
+	if (parse_args(argc, argv) < 0) {
+		usage(argv);
+		exit(3);
+	}
+
+	if (conf_parse() < 0) {
 		fprintf(stderr, "Error processing conf file, exiting.\n");
 		exit(3);
 	}

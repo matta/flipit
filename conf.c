@@ -35,11 +35,27 @@
 
 static char* dev_tty = 0;
 
+/* Set the tty device we should open. */
+void
+conf_set_dev_tty(const char* tty)
+{
+	if (!dev_tty && tty) {
+		dev_tty = malloc(strlen(tty) + 1);
+		if (dev_tty) {
+			strcpy(dev_tty, tty);
+		}
+	}
+}
+
 /* Return the tty device we should open. */
 const char* 
 conf_dev_tty(void)
 {
-	return dev_tty;
+	if (dev_tty) {
+		return dev_tty;
+	} else {
+		return "";
+	}
 }
 
 static char* 
@@ -51,7 +67,10 @@ eatws(char* p)
 	return p;
 }
 
-int conf_parse(void)
+/* Parse the config file.  Return -1 on error, 0 if parsing went well,
+ * and 1 if the file isn't there. */
+int 
+conf_parse(void)
 {
 	FILE* conf;
 	char buffer[4097];
@@ -59,8 +78,7 @@ int conf_parse(void)
 
 	conf = fopen(SYSCONFFILE, "r");
 	if (!conf) {
-		fprintf(stderr, "Could not open %s\n", SYSCONFFILE);
-		return -1;
+		return 1;
 	}
 
 	line = 0;
@@ -99,11 +117,7 @@ int conf_parse(void)
 		}
 
 		if (!strcmp(variable, "tty")) {
-			dev_tty = (char*)malloc(strlen(setting) + 1);
-			if (!dev_tty) {
-				return -1;
-			}
-			strcpy(dev_tty, setting);
+			conf_set_dev_tty(setting);
 		} else {
 			fprintf(stderr, "%s line %d: invalid option %s\n",
 				SYSCONFFILE, line, variable);

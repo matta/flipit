@@ -61,18 +61,27 @@ The simplest way to compile this package is:
 
   2. Type `make' to compile the package.
 
-  3. The program will not work until it is installed.  Flipit looks
-     for flipit.conf (usually as /usr/local/etc/flipit.conf, but that
-     will differ if you passed --prefix or --sysconfdir to the
-     `./configure' script).  If you want to copy the sample
-     flipit.conf file to the appropriate directory, edit it to suit
-     your system, and then re-try flipit.
+  3. Figure out which serial port your Firecracker is attached to.
+     Some notes on this can be found in the provided flipit.conf file.
+     We'll choose /dev/tty00 in this example.  Then pick a lamp to
+     turn on and off.  We'll choose lamp 1 in house code A.  Test
+     flipit with:
 
-  3. Type `make install' to install the programs and any data files
+        ./flipit -t /dev/tty00 flip a1 on
+        ./flipit -t /dev/tty00 flip a1 off
+
+     If it doesn't work and you are sure you've got the right serial
+     port (and permissions to open it), then feel free to e-mail
+     me at <matt@lickey.com>.
+
+  4. Edit the supplied flipit.conf and change the tty setting to the
+     one you used in the above test.
+
+  5. Type `make install' to install the programs and any data files
      and documentation.  PLEASE take the time to read the `SECURITY'
      file before doing this.
 
-  4. You can remove the program binaries and object files from the
+  6. You can remove the program binaries and object files from the
      source code directory by typing `make clean'.  To also remove the
      files that `configure' created (so you can compile the package
      for a different kind of computer), type `make distclean'.  There

@@ -1,0 +1,12 @@
+1999-08-02  Matt Armstrong  <matt@lickey.com>
+
+	* conf.c (conf_parse): don't fail if conf file is missing.
+	(conf_dev_tty): new function.
+	(conf_parse): call conf_dev_tty().
+	(conf_dev_tty): return "" if tty isn't set.
+
+	* conf.h (conf_set_dev_tty): new prototype.
+
+	* cm17a.c (parse_args): new function.
+	(main): call parse_args().
+

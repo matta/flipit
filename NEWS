@@ -1,4 +1,12 @@
-User visible changes for version 0.1.1:
-	Port to OpenBSD.
+User visible changes for flipit version 0.1.2:
 
-Initial public release was version 0.1.0.
+	Add -h and -t command line arguments.  Updated INSTALL
+	explaining how -t can be used to test flipit before the "make
+	install" step.
+
+User visible changes for flipit version 0.1.1:
+
+	Port to OpenBSD (minor compile problems -- it worked once it
+	compiled).
+
+Initial public release of flipit was version 0.1.0.

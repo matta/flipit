@@ -26,7 +26,10 @@
 #ifndef CONF_H
 #define CONF_H
 
-int conf_parse(void);
-const char* conf_dev_tty(void);
+int		conf_parse(void);
+const char*	conf_dev_tty(void);
+void		conf_set_dev_tty(const char*);
+
+#define SYSCONFFILE SYSCONFDIR ## "/flipit.conf"
 
 #endif /* CONF_H */
