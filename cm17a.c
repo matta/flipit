@@ -123,8 +123,8 @@ cm17a_command_word(int house,
 	unsigned short retval;
 
 	assert(house >= 0 && house < ELEMENT_COUNT(house_codes));
-	assert(device >= 0 && house < ELEMENT_COUNT(device_codes));
-	assert(command >= 0 && house < ELEMENT_COUNT(command_codes));
+	assert(device >= 0 && device < ELEMENT_COUNT(device_codes));
+	assert(command >= 0 && command < ELEMENT_COUNT(command_codes));
 	
 	switch (command) {
 	case BRIGHTEN:

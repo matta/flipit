@@ -4,7 +4,7 @@ flipit - control the X10 Firecracker (CM17A)
 
 =head1 SYNOPSIS
 
-S<flipit [B<flip> B<(a-p)(1-16)> B<(on|off)>] [repeat...]>
+ flipit [-h] [-t tty] [COMMAND ARGS] [COMMAND ARGS]...
 
 =head1 DESCRIPTION
 
@@ -22,12 +22,61 @@ For more information, see http://www.lickey.com/flipit/.
 
 =head1 OPTIONS
 
-Flipit has a simple command structure.  The first argument must always
-be 'flip.'  The next argument is a device specifier.  Device
-specifiers are comprised of a house code (a letter "a" to "p") and a
-device code (a number 1 to 16).  The next argument is either "on" or
-"off."  These three arguments can be repeated in this sequence, which
-allows to turn more than one device on or off at a time.
+First pass any options to flipit, then pass any commands.  For a list of
+commands, see the COMMANDS section below.  Now, for the options...
+
+=over 4
+
+=item help
+
+  -h
+
+Displays the usage message.
+
+=item tty
+
+  -t tty
+
+Set the tty flipit will use.  This is usually set in the configuration
+file F<flipit.conf>, but this option lets you override it, mainly for
+testing purposes.
+
+=back
+
+=head1 COMMANDS
+
+After any of the above options, you pass any number of commands on the
+command line.  The commands are flip, dim and brighten.
+
+Most of the commands take a "device-specifier" argument.  This is just
+a way to specify a given X10 device with a string of characters.
+Device specifiers are comprised of a house code (a letter "a" to "p")
+and a device code (a number 1 to 16).  E.g. a10
+
+For concrete examples, see the EXAMPLES section.
+
+=over 4
+
+=item brighten
+
+  brighten device-specifier steps
+
+Brighten a device by a given number of steps.  Steps can be from 1 to 6.
+
+=item dim
+
+  dim device-specifier steps
+
+Dim a device by a given number of steps.  Steps can be from 1 to 6.
+
+=item flip
+
+  flip device-specifier on|off
+
+Flip a device on or off.  The first argument is a device specifier
+(see above).  The next argument is either "on" or "off."
+
+=back
 
 =head1 ERRORS
 
@@ -46,6 +95,11 @@ device 16 in house code A on:
 
 C<flipit flip c10 off flip a16 on>
 
+The following will dim device a5 by 2 steps, then brighten device d7 by 4
+steps.
+
+C<flipit dim a5 2 brighten d7 4>
+
 =head1 FILES
 
 flipit reads the filename of the tty device to use from the
@@ -60,7 +114,13 @@ A similar and more full featured program is called BottleRocket.
 
 =head1 BUGS
 
-Flipit doesn't create any lock files when accessing the tty.
+Flipit doesn't create any lock files when accessing the tty.  There should at
+least be an option to do this for those using the cm17a on the same serial
+port as their modem or similar.
+
+There are reports of the brighten command always taking the lamp to the full
+brightness.  I haven't been able to reproduce that here.  Any suggestions or
+fixes are appreciated.
 
 =head1 RESTRICTIONS
 

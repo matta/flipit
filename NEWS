@@ -1,3 +1,8 @@
+User visible changes for flipit version 0.1.5, August 22, 1999:
+
+	Improved the man page and documented /dev/cuaX in the
+	template flipit.conf.
+
 User visible changes for flipit version 0.1.4, August 18, 1999:
 
 	Bug fix: the -t arg now works again.
