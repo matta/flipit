@@ -5,6 +5,7 @@ Flipit has been reported to compile and run under the following Unix
 and Unix-like operating systems:
 
 	Linux
+	FreeBSD
 	OpenBSD
 	NetBSD
 	Solaris
@@ -68,12 +69,12 @@ The simplest way to compile this package is:
 
   3. Figure out which serial port your Firecracker is attached to.
      Some notes on this can be found in the provided flipit.conf file.
-     We'll choose /dev/tty00 in this example.  Then pick a lamp to
+     We'll choose /dev/ttyS0 in this example.  Then pick a lamp to
      turn on and off.  We'll choose lamp 1 in house code A.  Test
      flipit with:
 
-        ./flipit -t /dev/tty00 flip a1 on
-        ./flipit -t /dev/tty00 flip a1 off
+        ./flipit -t /dev/ttyS0 flip a1 on
+        ./flipit -t /dev/ttyS0 flip a1 off
 
      If it doesn't work and you are sure you've got the right serial
      port (and permissions to open it), then feel free to e-mail

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 1999-2000, 2003 Matt Armstrong
+ * Copyright (C) 1999, 2002 Matt Armstrong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,22 +23,18 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-AC_INIT(cm17a.c)
-AM_INIT_AUTOMAKE(flipit, 0.3.3)
 
-if test x"$missing_dir" = x; then
-	echo "Whoopse, AM_INIT_AUTOMAKE used to set $missing_dir"
-	missing_dir=`cd $ac_aux_dir && pwd`
-fi
-FLIPIT_MISSING_POD_PROG(POD2HTML, pod2html, $missing_dir)
-FLIPIT_MISSING_POD_PROG(POD2MAN, pod2man, $missing_dir)
+#ifndef CM17A_H
+#define CM17A_H
 
-AM_CONFIG_HEADER(config.h)
-AM_MAINTAINER_MODE
+enum CM17A_COMMAND {
+	CM17A_ON, CM17A_OFF, CM17A_BRIGHTEN, CM17A_DIM
+};
 
-AC_PROG_CC
+void cm17a_command(int fd,
+                   int house,
+                   int device,
+		   enum CM17A_COMMAND,
+                   int steps);
 
-AC_STDC_HEADERS
-AC_HAVE_HEADERS(fcntl.h sys/ioctl.h sys/time.h sys/types.h unistd.h termio.h)
-
-AC_OUTPUT([Makefile flipit.pod])
+#endif

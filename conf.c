@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 1999 Matt Armstrong
+ * Copyright (C) 1999 Matt Armstrong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,8 @@ eatws(char* p)
 }
 
 /* Parse the config file.  Return -1 on error, 0 if parsing went well,
- * and 1 if the file isn't there. */
+ * 1 if the file wasn't even there.
+ */
 int 
 conf_parse(void)
 {

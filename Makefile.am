@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 1999 Matt Armstrong
+#  Copyright (C) 1999, 2002, 2003 Matt Armstrong
 #  All rights reserved.
 # 
 #  Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ POD2MAN = @POD2MAN@
 AUTOMAKE_OPTIONS = check-news 1.4
 
 bin_PROGRAMS = flipit
-flipit_SOURCES = cm17a.c conf.c
+flipit_SOURCES = flipit.c cm17a.h cm17a.c conf.c
 sysconf_DATA = flipit.conf
 man_MANS = flipit.1
 noinst_DATA = flipit.html
@@ -40,6 +40,7 @@ EXTRA_DIST = cm17a_proto.txt bootstrap conf.h flipit.pod.in SECURITY \
 CUSTOM_DIST = $(man_MANS) $(noinst_DATA)
 CUSTOM_VERSION_CHECK = $(srcdir)/README flipit.1 flipit.html
 
+CLEANFILES = *~
 
 AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
 

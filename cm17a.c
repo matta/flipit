@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 1999 Matt Armstrong
+ * Copyright (C) 1999, 2002 Matt Armstrong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,8 @@
 #include <termio.h>
 #endif
 
+#include "cm17a.h"
+
 enum SIGNAL {
 	RESET = 0,
 	HIGH = TIOCM_RTS,
@@ -106,22 +108,18 @@ unsigned short device_codes[16] = {
 /* The command codes are described by bits 1, 2, 5, 7, 8, 9, and
    11. */
 unsigned short command_codes[] = {
-	0x0000,			/* ON */
-	0x0020,			/* OFF */
+	0x0000,			/* CM17A_ON */
+	0x0020,			/* CM17A_OFF */
 	0x0088,			/* BRIGHT */
-	0x0098,			/* DIM */
-};
-
-enum command_index {
-	ON, OFF, BRIGHTEN, DIM
+	0x0098,			/* CM17A_DIM */
 };
 
 #define ELEMENT_COUNT(a) (sizeof(a) / sizeof((a)[0]))
 
-unsigned short
+static unsigned short
 cm17a_command_word(int house, 
 		   int device, 
-		   enum command_index command)
+		   enum CM17A_COMMAND command)
 {
 	unsigned short retval;
 
@@ -130,8 +128,8 @@ cm17a_command_word(int house,
 	assert(command >= 0 && command < ELEMENT_COUNT(command_codes));
 	
 	switch (command) {
-	case BRIGHTEN:
-	case DIM:
+	case CM17A_BRIGHTEN:
+	case CM17A_DIM:
 		retval = house_codes[house] | command_codes[command];
 		break;
 
@@ -195,7 +193,7 @@ write_byte(int fd, unsigned char byte)
 	return 0;
 }
 
-int
+static int
 write_stream(int fd, 
 	     const unsigned char* data, 
 	     size_t byte_count) 
@@ -241,7 +239,7 @@ static int
 cm17a_write_command(int fd, 
 		    int house, 
 		    int device, 
-		    enum command_index command)
+		    enum CM17A_COMMAND command)
 {
 	short command_word;
 
@@ -267,204 +265,50 @@ cm17a_write_command(int fd,
 	return 0;
 }
 
-int
-parse_device(const char* device_str, 
-	     int* house, int* device)
-{
-	*house = -1;
-	*device = -1;
-
-	if (strlen(device_str) >= 2) {
-		*house = toupper(device_str[0]) - 'A';
-		*device = atoi(&device_str[1]) - 1;
-	}
-
-	if (*house < 0 || *house > 15 || *device < 0 || *device > 15) {
-
-		fprintf(stderr, "Invalid house/device specification %s\n",
-			device_str);
-		return -1;
-	}
-	return 0;
-}
-
 void
-flip(int fd,
-     const char* device_str, 
-     const char* operation_str) 
+cm17a_command(int fd,
+              int house,
+              int device,
+	      enum CM17A_COMMAND cmd,
+              int steps)
 {
-	int house;
-	int device;
-
-	if (parse_device(device_str, &house, &device)) {
-		return;
-	}
-
-	if (!strcmp(operation_str, "on")) {
-		if (cm17a_write_command(fd, house, device, ON) != 0) {
+	switch (cmd) {
+	case CM17A_ON:
+	case CM17A_OFF:
+		if (cm17a_write_command(fd, house, device, cmd) != 0) {
 			fprintf(stderr, "Command failed.\n");
 		}
-	} else if (!strcmp(operation_str, "off")) {
-		if (cm17a_write_command(fd, house, device, OFF) != 0) {
-			fprintf(stderr, "Command failed.\n");
-		}
-	} else {
-		fprintf(stderr, "Invalid flip operation %s\n", operation_str);
-	}
-}
-
-void
-dim_or_brighten(int fd, 
-		const char* device_str, 
-		const char* steps_str,
-		enum command_index cmd)
-{
-	int house;
-	int device;
-	int steps;
-
-	if (parse_device(device_str, &house, &device)) {
-		return;
-	}
-
-	steps = atoi(steps_str);
-
-	if (steps < 1 || steps > 6) {
-		fprintf(stderr, 
-			"Invalid steps (%d).  Must be [1..6].\n", 
-			steps);
-		return;
-	}
-
-	/* Turn the device we wish to control on first.  If we don't
-	   do this, the dim command gets handled by the last device
-	   that got turned on.  The cm17a dim/brighten command doesn't
-	   use a device code. */
-	   
-	if (cm17a_write_command(fd, house, device, ON) != 0) {
-		fprintf(stderr, "Command failed.\n");
-	}
-
-	do {
-		if (cm17a_write_command(fd, house, device, cmd)) {
-			fprintf(stderr, "Command failed.\n");
-		}
-	} while (--steps > 0);
-}
-
-void
-usage(char* argv[])
-{
-	printf(
-"Usage: %s [OPTION]... [COMMANDS]...\n"
-"\n"
-"Control the X10 Firecracker (CM17A).  This program's behavior is\n"
-"controlled in part by the %s file, but any\n"
-"command line arguments override that file's settings.\n"
-"\n"
-"OPTIONS:\n"
-"\n"
-" -h            This help.\n"
-" -t tty        Set the tty flipit will use.  This is usually set in the\n"
-"               configuration file (%s).\n"
-"\n"
-"COMMANDS:\n"
-"\n"
-" flip <house code><device number> [on|off]\n"
-" dim <house code><device number> count\n"
-" brighten <house code><device number> count\n"
-"\n"
-"    Flip a device on or off, dim or brighten a device by count\n"
-"    steps.\n"
-"\n"
-"EXAMPLES:\n"
-"\n"
-"    flipit flip a1 off\n"
-"    flipit flip b4 on\n"
-"    flipit dim h7 5\n"
-"    flipit brighten a2 2\n"
-"\n"
-"You can pass more than one command at a time.\n"
-"\n"
-"    flipit flip a1 off flip b4 on dim h7 5\n"
-"\n"
-"Report bugs to <matt@lickey.com>.  This is flipit version %s\n"
-"The flipit home page is http://www.lickey.com/flipit/.\n", 
-	argv[0], SYSCONFFILE, SYSCONFFILE, VERSION);
-}
-
-
-
-int
-parse_args(int argc, char* argv[])
-{
-	int c;
-
-	while ((c = getopt(argc, argv, "ht:")) != EOF) {
-		switch (c) {
-		case 'h':	/* help */
-			usage(argv);
-			exit(0);
-
-		case 't':	/* set the tty */
-			conf_set_dev_tty(optarg);
-			break;
-		}
-	}
-	return 0;
-}
-
-int
-main(int argc, char* argv[]) 
-{
-	int fd;
-	int i;
-
-	if (parse_args(argc, argv) < 0) {
-		usage(argv);
-		exit(3);
-	}
-
-	if (conf_parse() < 0) {
-		fprintf(stderr, "Error processing conf file, exiting.\n");
-		exit(3);
-	}
-
-	if ((fd = open(conf_dev_tty(), O_RDONLY | O_NDELAY)) < 0) {
-		fprintf(stderr, "Error opening tty %s\n", conf_dev_tty());
-		exit(3);
-	}
-
-	/* optind is set by getopt() */
-	for (i = optind; i < argc; i++) {
-		if (!strcmp(argv[i], "flip") && (i + 2) < argc) {
-			flip(fd, argv[i + 1], argv[i + 2]);
-			i += 2;
-		} else if (!strcmp(argv[i], "dim") && (i + 2) < argc) {
-			dim_or_brighten(fd, argv[i + 1], argv[i + 2], 
-					DIM);
-			i += 2;
-		} else if (!strcmp(argv[i], "brighten") && (i + 2) < argc) {
-			dim_or_brighten(fd, argv[i + 1], argv[i + 2], 
-					BRIGHTEN);
-			i += 2;
-		} else {
+		break;
+	case CM17A_BRIGHTEN:
+	case CM17A_DIM:
+	{
+		if (steps < 1 || steps > 6) {
 			fprintf(stderr, 
-				"Could not recognize trailing args:\n");
-			for (; i < argc; i++) {
-				fprintf(stderr, " %s\n", argv[i]);
-			}
-			usage(argv);
+				"Invalid steps (%d).  Must be [1..6].\n", 
+				steps);
+			return;
 		}
-	}
-	if (i == 1) {
-		usage(argv);
-	}
 
-	close(fd);
-	return 0;
+		/* Turn the device we wish to control on first.  If we don't
+		   do this, the dim command gets handled by the last device
+		   that got turned on.  The cm17a dim/brighten command doesn't
+		   use a device code. */
+	   
+		if (cm17a_write_command(fd, house, device, CM17A_ON) != 0) {
+			fprintf(stderr, "Command failed.\n");
+		}
+
+		while (--steps >= 0) {
+			if (cm17a_write_command(fd, house, device, cmd)) {
+				fprintf(stderr, "Command failed.\n");
+			}
+		}
+		break;
+	}
+	default:
+		fprintf(stderr, "Invalid flip operation\n");
+	}
 }
-
 
 /*
   Local Variables:

@@ -1,4 +1,4 @@
-# Makefile.in generated automatically by automake 1.4 from Makefile.am
+# Makefile.in generated automatically by automake 1.4-p4 from Makefile.am
 
 # Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
 # This Makefile.in is free software; the Free Software Foundation
@@ -11,7 +11,7 @@
 # PARTICULAR PURPOSE.
 
 #
-#  Copyright (c) 1999 Matt Armstrong
+#  Copyright (C) 1999, 2002, 2003 Matt Armstrong
 #  All rights reserved.
 # 
 #  Redistribution and use in source and binary forms, with or without
@@ -95,7 +95,7 @@ POD2MAN = @POD2MAN@
 AUTOMAKE_OPTIONS = check-news 1.4
 
 bin_PROGRAMS = flipit
-flipit_SOURCES = cm17a.c conf.c
+flipit_SOURCES = flipit.c cm17a.h cm17a.c conf.c
 sysconf_DATA = flipit.conf
 man_MANS = flipit.1
 noinst_DATA = flipit.html
@@ -105,6 +105,8 @@ EXTRA_DIST = cm17a_proto.txt bootstrap conf.h flipit.pod.in SECURITY 		solaris.t
 
 CUSTOM_DIST = $(man_MANS) $(noinst_DATA)
 CUSTOM_VERSION_CHECK = $(srcdir)/README flipit.1 flipit.html
+
+CLEANFILES = *~
 
 AM_CPPFLAGS = -DSYSCONFDIR=\"$(sysconfdir)\"
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -118,7 +120,7 @@ DEFS = @DEFS@ -I. -I$(srcdir) -I.
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-flipit_OBJECTS =  cm17a.o conf.o
+flipit_OBJECTS =  flipit.o cm17a.o conf.o
 flipit_LDADD = $(LDADD)
 flipit_DEPENDENCIES = 
 flipit_LDFLAGS = 
@@ -157,7 +159,7 @@ Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ configure.in  acinclude.m4
 	cd $(srcdir) && $(ACLOCAL)
 
-config.status: $(srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+config.status: $(srcdir)/configure.in $(CONFIG_STATUS_DEPENDENCIES)
 	$(SHELL) ./config.status --recheck
 $(srcdir)/configure: @MAINTAINER_MODE_TRUE@$(srcdir)/configure.in $(ACLOCAL_M4) $(CONFIGURE_DEPENDENCIES)
 	cd $(srcdir) && $(AUTOCONF)
@@ -380,8 +382,9 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 	$(MAKE) $(AM_MAKEFLAGS) top_distdir="$(top_distdir)" distdir="$(distdir)" dist-hook
-cm17a.o: cm17a.c config.h conf.h
+cm17a.o: cm17a.c config.h conf.h cm17a.h
 conf.o: conf.c conf.h
+flipit.o: flipit.c config.h conf.h cm17a.h
 
 info-am:
 info: info-am
@@ -417,6 +420,7 @@ installdirs:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-rm -f Makefile $(CONFIG_CLEAN_FILES)
