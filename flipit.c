@@ -1,5 +1,5 @@
 /*-
- * Copyright (C) 1999, 2002 Matt Armstrong
+ * Copyright (C) 1999, 2002, 2003 Matt Armstrong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -187,11 +187,13 @@ main(int argc, char* argv[])
                                 cm17a_command(fd, house, device, CM17A_DIM,
                                               atoi(argv[i + 2]));
                         }
+                        i += 2;
 		} else if (!strcmp(argv[i], "brighten") && (i + 2) < argc) {
                         if (parse_device(argv[i + 1], &house, &device) == 0) {
                                 cm17a_command(fd, house, device, CM17A_DIM,
                                               atoi(argv[i + 2]));
                         }
+                        i += 2;
 		} else {
 			fprintf(stderr,
 				"Could not recognize trailing args:\n");

@@ -1,3 +1,9 @@
+User visible changes for flipit version 0.3.4, Feb 18, 2003:
+
+        Fixed bug in "brighten" and "dim" command processing.
+        Previously when they were issued, flipit would not advance
+        past them and issue an error.
+
 User visible changes for flipit version 0.3.3, Jan 23, 2003:
 
 	Added FreeBSD to the list of platforms this is known to work on.
