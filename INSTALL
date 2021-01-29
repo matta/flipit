@@ -11,7 +11,7 @@ and Unix-like operating systems:
 	Solaris
 
 If your operating system is not listed and you get it to work, please
-drop me a line at matt@lickey.com.  I am very interested to hear about
+drop me a line at gmatta@gmail.com.  I am very interested to hear about
 both successes and failures.
 
 If you're having trouble on Solaris, check out solaris.txt in the
@@ -78,7 +78,7 @@ The simplest way to compile this package is:
 
      If it doesn't work and you are sure you've got the right serial
      port (and permissions to open it), then feel free to e-mail
-     me at <matt@lickey.com>.
+     me at <gmatta@gmail.com>.
 
   4. Edit the supplied flipit.conf and change the tty setting to the
      one you used in the above test.

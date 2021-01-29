@@ -84,8 +84,7 @@ usage(char* argv[])
 "\n"
 "    flipit flip a1 off flip b4 on dim h7 5\n"
 "\n"
-"Report bugs to <matt@lickey.com>.  This is flipit version %s\n"
-"The flipit home page is http://www.lickey.com/flipit/.\n", 
+"Report bugs to <gmatta@gmail.com>.  This is flipit version %s\n",
 	argv[0], SYSCONFFILE, SYSCONFFILE, VERSION);
 }
 

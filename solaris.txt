@@ -1,5 +1,5 @@
 From: "Jeff Byers" <jlbyers at san dot rr dot com>
-To: <matt@lickey.com>
+To: <gmatta@gmail.com>
 Subject: flipit on SUN Ultra 5 running Solaris 2.6 -- what it took. 
 Date: Thu, 3 Aug 2000 09:54:38 -0700
 

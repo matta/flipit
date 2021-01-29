@@ -18,8 +18,6 @@ X10 is a method of transmitting control commands to devices over
 regular home power lines.  The Firecracker is a device manufactured by
 X10 Ltd.  See http://www.x10.com/ for product information.
 
-For more information, see http://www.lickey.com/flipit/.
-
 =head1 OPTIONS
 
 First pass any options to flipit, then pass any commands.  For a list of
@@ -130,5 +128,4 @@ the tty device named in F<flipit.conf> it will be happy to do so.
 
 =head1 AUTHOR
 
-Matt Armstrong <matt@lickey.com>
-http://www.lickey.com/flipit/
+Matt Armstrong <gmatta@gmail.com>

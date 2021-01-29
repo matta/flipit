@@ -23,7 +23,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-AC_INIT(flipit, 0.3.6, matt@lickey.com)
+AC_INIT(flipit, 0.3.6, gmatta@gmail.com)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR([cm17a.c])
 AM_INIT_AUTOMAKE(flipit, 0.3.6)
